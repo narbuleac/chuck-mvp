@@ -13,6 +13,7 @@ public class RemoteChuckModel implements ChuckModel {
 
     private final JokesService service;
     private JokeListener jokeListener;
+    private Joke joke;
 
     public RemoteChuckModel(JokesService service) {
         this.service = service;
@@ -38,7 +39,8 @@ public class RemoteChuckModel implements ChuckModel {
                 }
                 BaseResponse<Joke> jokeResponse = response.body();
                 if (response.isSuccessful() && jokeResponse != null && "success".equals(jokeResponse.getType())) {
-                    jokeListener.onJokeLoaded(jokeResponse.getValue());
+                    joke = jokeResponse.getValue();
+                    jokeListener.onJokeLoaded(joke);
                     return;
                 }
                 jokeListener.onJokeLoadingError("Chuck is tired, try later!");
